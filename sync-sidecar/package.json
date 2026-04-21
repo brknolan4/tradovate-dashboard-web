@@ -1,0 +1,16 @@
+{
+  "name": "tradovate-sync-sidecar",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "playwright": "^1.58.2"
+  },
+  "scripts": {
+    "status": "node ./src/cli/status.js",
+    "sync": "node ./src/cli/sync.js",
+    "sync:bootstrap": "node ./src/cli/sync.js --manual-login --bootstrap-only",
+    "plan": "node ./src/cli/plan.js"
+  }
+}

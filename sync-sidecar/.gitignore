@@ -1,0 +1,7 @@
+node_modules/
+.env.local
+.env.sync.local
+runtime/browser-session/
+runtime/dedicated-browser-profile/
+runtime/downloads/
+runtime/staging/

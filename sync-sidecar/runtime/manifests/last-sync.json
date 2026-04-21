@@ -1,0 +1,128 @@
+{
+  "ok": false,
+  "startedAt": "2026-03-23T02:25:02.885Z",
+  "finishedAt": "2026-03-23T02:26:44.267Z",
+  "strategy": {
+    "mode": "persistent-session-unverified",
+    "ready": true,
+    "reason": "Dedicated sidecar profile artifacts exist, but no trusted authenticated marker was found. Treat as maybe reusable until launch-time verification succeeds.",
+    "sessionState": {
+      "authenticated": false,
+      "verifiedAt": null,
+      "verificationMode": null,
+      "verificationReason": "Env credential fallback submitted credentials but Tradovate still appears unauthenticated at https://trader.tradovate.com/welcome. Manual intervention may still be required for MFA, captcha, locked account checks, or updated selectors.",
+      "url": "https://trader.tradovate.com/welcome",
+      "title": "Tradovate",
+      "authEvidence": {
+        "hasReportsLanguage": false,
+        "hasTradingLanguage": true,
+        "cookieSummary": {
+          "total": 57,
+          "tradovateCookies": 47,
+          "hasSessionLikeCookie": true
+        },
+        "localStorageSnapshot": {
+          "keyCount": 25,
+          "authLikeKeys": [
+            "accountGroups",
+            "lastUsername"
+          ]
+        },
+        "bodySnippet": "English Deutsch Español Français Italiano Português Русский 简体中文 繁體中文 ​ Username ​ Password ​ Login Need help? Or Sign in with Google Sign in with Apple Welcome back! Log in to access Tradovate. Don't have an account? Try a free trial We use cookies to ensure that we give you the best experience on our website. By continuing using the website, you ",
+        "passwordVisible": true,
+        "usernameVisible": false,
+        "looksLikeWelcomeLogin": true,
+        "looksLoggedOutUrl": true
+      },
+      "profile": {
+        "sessionDir": "/mnt/shared/AI-Shared/AntigravityProjects/tradovate dashbaord/sync-sidecar/runtime/dedicated-browser-profile",
+        "profileDirectory": "Default"
+      },
+      "browser": {
+        "source": "system-snap",
+        "executablePath": "/snap/bin/chromium",
+        "channel": null,
+        "displayName": "chromium"
+      }
+    }
+  },
+  "plan": {
+    "expectedReports": [
+      "fills.csv",
+      "performance.csv",
+      "account-balance-history.csv"
+    ],
+    "appTargets": [
+      "src/context/DataContext importFills() <- fills.csv",
+      "src/context/DataContext importData() <- performance.csv",
+      "src/context/DataContext importData() <- account-balance-history.csv (optional balance history supplement)"
+    ],
+    "accountHandling": {
+      "preserveSeparateAccounts": true,
+      "note": "One Tradovate login can contain multiple trading accounts. Imports should stay account-specific, especially for PA Apex accounts."
+    },
+    "note": "The sidecar now reflects the confirmed manual workflow: Reports -> Fills/Performance -> Date dropdown -> This Year -> Download CSV. Live selectors may still need local tuning against a real authenticated Tradovate session."
+  },
+  "requestedReportIds": [
+    "fills",
+    "performance",
+    "account-balance-history"
+  ],
+  "unknownReports": [],
+  "runtimePaths": {
+    "downloadDir": "/mnt/shared/AI-Shared/AntigravityProjects/tradovate dashbaord/sync-sidecar/runtime/downloads",
+    "sessionDir": "/mnt/shared/AI-Shared/AntigravityProjects/tradovate dashbaord/sync-sidecar/runtime/dedicated-browser-profile",
+    "importStagingDir": "/mnt/shared/AI-Shared/AntigravityProjects/tradovate dashbaord/sync-sidecar/runtime/staging",
+    "manifestsDir": "/mnt/shared/AI-Shared/AntigravityProjects/tradovate dashbaord/sync-sidecar/runtime/manifests",
+    "logsDir": "/mnt/shared/AI-Shared/AntigravityProjects/tradovate dashbaord/sync-sidecar/runtime/logs"
+  },
+  "browserTarget": {
+    "executablePath": "/snap/bin/chromium",
+    "source": "system-snap",
+    "displayName": "chromium",
+    "channel": "",
+    "exists": true
+  },
+  "launchAttempts": [],
+  "session": {
+    "loggedIn": false,
+    "mode": "manual-login-aborted",
+    "detail": "Manual login bootstrap was aborted before an authenticated session was verified.",
+    "authState": {
+      "authenticated": false,
+      "currentUrl": "https://trader.tradovate.com/",
+      "title": "Tradovate - Dark Default",
+      "passwordVisible": false,
+      "usernameVisible": false,
+      "looksLikeWelcomeLogin": false,
+      "looksLoggedOutUrl": false,
+      "hasReportsLanguage": false,
+      "hasTradingLanguage": false,
+      "bodySnippet": "ACCOUNT PAAPEX3165410000008 EQUITY 50,684.54 USD OPEN P/L 0.00 USD DAY MARGIN 0% INITIAL MARGIN 0% 83 1 NQH6 CLQ4 ZNM6 H MNQM6 1m 6EN4 15m BITN4 5m MSFT D H --/--/---- ×",
+      "localStorageSnapshot": {
+        "keyCount": 25,
+        "authLikeKeys": [
+          "accountGroups",
+          "lastUsername"
+        ]
+      },
+      "cookieSummary": {
+        "total": 56,
+        "tradovateCookies": 46,
+        "hasSessionLikeCookie": true
+      }
+    }
+  },
+  "configSummary": {
+    "headless": false,
+    "sessionBootstrapOnly": true,
+    "manualLoginMode": true,
+    "manualLoginTimeoutMs": 1800000,
+    "nonInteractive": false,
+    "hasEnvCredentials": true,
+    "hasTotpSecret": false
+  },
+  "results": [],
+  "stagedReports": [],
+  "blocked": "Session bootstrap only requested; no report downloads attempted."
+}
