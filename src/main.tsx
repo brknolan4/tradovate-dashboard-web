@@ -36,18 +36,21 @@ function renderBootError(error: unknown) {
 Promise.all([
   import('./App.tsx'),
   import('./components/AppErrorBoundary.tsx'),
+  import('./components/AuthGate.tsx'),
   import('./context/DataContext'),
   import('./context/SyncContext'),
 ])
-  .then(([{ default: App }, { default: AppErrorBoundary }, { DataProvider }, { SyncProvider }]) => {
+  .then(([{ default: App }, { default: AppErrorBoundary }, { default: AuthGate }, { DataProvider }, { SyncProvider }]) => {
     root.render(
       <StrictMode>
         <AppErrorBoundary>
-          <SyncProvider>
-            <DataProvider>
-              <App />
-            </DataProvider>
-          </SyncProvider>
+          <AuthGate>
+            <SyncProvider>
+              <DataProvider>
+                <App />
+              </DataProvider>
+            </SyncProvider>
+          </AuthGate>
         </AppErrorBoundary>
       </StrictMode>,
     )
