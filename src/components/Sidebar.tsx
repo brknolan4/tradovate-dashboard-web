@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { LayoutDashboard, Calendar, GripVertical, Shield, ChevronRight, FolderSync } from 'lucide-react';
+import { LayoutDashboard, Calendar, GripVertical, Shield, ChevronRight, FolderSync, LogOut } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import type { User } from '@supabase/supabase-js';
 
 interface SidebarProps {
   activeTab: string;
@@ -9,6 +11,21 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
   const [width, setWidth] = useState(248);
   const isResizing = useRef(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = () => supabase.auth.signOut();
+
+  const displayName = user?.user_metadata?.full_name || user?.email || 'Trader';
+  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
+  const initials = displayName.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase();
 
   const startResizing = useCallback(() => {
     isResizing.current = true;
@@ -102,14 +119,25 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
       </nav>
 
       <div className="mt-6 pt-5 border-t border-white/8 overflow-hidden">
-        <div className="flex items-center gap-3 px-3 py-3 bg-white/[0.03] border border-white/8 rounded-2xl whitespace-nowrap overflow-hidden">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm font-bold flex-shrink-0 shadow-lg shadow-indigo-500/20">
-            BN
-          </div>
-          <div className="flex flex-col overflow-hidden">
-            <span className="text-sm font-semibold truncate text-white">Brendan Nolan</span>
+        <div className="flex items-center gap-3 px-3 py-3 bg-white/[0.03] border border-white/8 rounded-2xl overflow-hidden">
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={displayName} className="w-11 h-11 rounded-2xl flex-shrink-0 object-cover shadow-lg" referrerPolicy="no-referrer" />
+          ) : (
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm font-bold flex-shrink-0 shadow-lg shadow-indigo-500/20">
+              {initials}
+            </div>
+          )}
+          <div className="flex flex-col overflow-hidden flex-1 min-w-0">
+            <span className="text-sm font-semibold truncate text-white">{displayName}</span>
             <span className="text-[10px] text-slate-500 uppercase tracking-widest truncate font-black">Trading workspace</span>
           </div>
+          <button
+            onClick={handleSignOut}
+            title="Sign out"
+            className="p-1.5 rounded-lg text-slate-600 hover:text-slate-300 hover:bg-white/[0.06] transition-all shrink-0"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </aside>
