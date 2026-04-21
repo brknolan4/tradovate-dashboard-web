@@ -82,8 +82,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
             <LayoutDashboard className="text-white w-5 h-5" />
           </div>
           <div className="overflow-hidden min-w-0">
-            <div className="text-[10px] uppercase tracking-[0.32em] text-slate-500 font-black">Tradovate</div>
             <div className="text-2xl font-black tracking-tight truncate">TraderDash</div>
+            <div className="text-[10px] uppercase tracking-[0.28em] text-slate-600 font-black">Prop Tracker</div>
           </div>
         </div>
 

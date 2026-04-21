@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import LandingPage from './LandingPage';
+import LoginPage from './LoginPage';
 
 interface AuthGateProps {
   children: React.ReactNode;
 }
 
+type Screen = 'landing' | 'login';
+
 export default function AuthGate({ children }: AuthGateProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [screen, setScreen] = useState<Screen>('landing');
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -33,7 +37,10 @@ export default function AuthGate({ children }: AuthGateProps) {
   }
 
   if (!session) {
-    return <LandingPage />;
+    if (screen === 'login') {
+      return <LoginPage onBack={() => setScreen('landing')} />;
+    }
+    return <LandingPage onGetStarted={() => setScreen('login')} />;
   }
 
   return <>{children}</>;
