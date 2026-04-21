@@ -118,8 +118,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
         })}
       </nav>
 
-      <div className="mt-6 pt-5 border-t border-white/8 overflow-hidden">
-        <div className="flex items-center gap-3 px-3 py-3 bg-white/[0.03] border border-white/8 rounded-2xl overflow-hidden">
+      <div className="mt-6 pt-5 border-t border-white/8">
+        <div className="flex items-center gap-3 px-3 py-3 bg-white/[0.03] border border-white/8 rounded-2xl">
           {avatarUrl ? (
             <img src={avatarUrl} alt={displayName} className="w-11 h-11 rounded-2xl flex-shrink-0 object-cover shadow-lg" referrerPolicy="no-referrer" />
           ) : (
