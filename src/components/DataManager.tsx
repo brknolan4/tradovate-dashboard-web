@@ -1,9 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Upload, Users, GitMerge, ChevronDown, CheckCircle2, XCircle, Trash2, FileDown } from 'lucide-react';
-import SyncNowButton from './SyncNowButton';
 import { useData } from '../context/DataContext';
-import { useSync } from '../context/SyncContext';
-import { fetchLatestSyncBundle } from '../services/syncService';
 import { parsePerformanceCSV, parseFillsCSV, parseCashCSV, cleanTradovateAccountName, getAccountLookupCandidates } from '../utils/csvParser';
 
 type TradovateBundleClassification = {
@@ -29,7 +26,6 @@ type ImportResult = {
 
 const DataManager = () => {
   const { importTradovateBundleData, importCash, mergeAccounts, clearData, accounts, accountCommissions, accountMappings, setAccountMappings, resolveAccountLabel, selectedAccount, setSelectedAccount } = useData();
-  const { syncNow, refreshStatus } = useSync();
   const [isDragging, setIsDragging] = useState(false);
   const [mappingDraft, setMappingDraft] = useState('');
   const [mergeTarget, setMergeTarget] = useState('');
@@ -309,39 +305,6 @@ const DataManager = () => {
     }
   };
 
-  const handleSyncImport = async () => {
-    const result = await syncNow({ accountHint: selectedAccount || undefined, source: 'manual' });
-    if (!result.accepted) return;
-    try {
-      const bundle = await fetchLatestSyncBundle();
-      if (!bundle || bundle.length === 0) {
-        await refreshStatus();
-        setImportResult({ ok: false, lines: ['Sync ran, but no staged bundle was available yet.'] });
-        return;
-      }
-      const fillsEntry = bundle.find(file => file.kind === 'fills' || file.name.toLowerCase().includes('fills'));
-      const performanceEntry = bundle.find(file => file.kind === 'performance' || file.name.toLowerCase().includes('performance'));
-      const cashEntry = bundle.find(file => file.kind === 'cash' || file.name.toLowerCase().includes('cash'));
-      const unknownNames = bundle.filter(file => !['fills', 'performance', 'cash'].includes(file.kind)).map(file => file.name);
-      if (!fillsEntry || !performanceEntry) {
-        await refreshStatus();
-        setImportResult({ ok: false, lines: ['Staged bundle is missing Fills.csv or Performance.csv.'] });
-        return;
-      }
-      await importTradovateBundle({
-        fillsName: fillsEntry.name,
-        fillsText: fillsEntry.content,
-        performanceText: performanceEntry.content,
-        cashText: cashEntry?.content,
-        unknownNames,
-      });
-      await refreshStatus();
-    } catch (error) {
-      console.error('Failed to consume staged sync bundle', error);
-      setImportResult({ ok: false, lines: ['Sync succeeded but import failed. Check the browser console.'] });
-    }
-  };
-
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
@@ -472,7 +435,6 @@ const DataManager = () => {
                   </select>
                 </div>
               )}
-              <SyncNowButton accountHint={selectedAccount || undefined} source="manual" onClick={() => { void handleSyncImport(); }} />
             </div>
           </div>
 
