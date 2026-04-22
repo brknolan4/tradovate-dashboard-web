@@ -4,58 +4,51 @@ interface LandingPageProps {
   onGetStarted: () => void;
 }
 
-// Every section gets this padding — guarantees breathing room regardless of viewport
-const SEC = 'px-8 sm:px-16 lg:px-24';
-// Text content stays narrow and centered inside that padding
-const INNER = 'max-w-[720px] mx-auto';
-// Mockups slightly wider
-const FRAME = 'max-w-[880px] mx-auto';
-
 export default function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-[#060a10] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#060a10] text-white">
 
       {/* ── Nav ──────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#060a10]/90 backdrop-blur-xl">
-        <div className={`${SEC} flex items-center justify-center h-16`}>
+        <div className="max-w-4xl mx-auto px-10 flex items-center justify-center h-16">
           <Logo />
         </div>
       </header>
 
       {/* ── Hero ─────────────────────────────────────── */}
-      <section className={`${SEC} relative pt-28 pb-20 text-center overflow-hidden`}>
+      <section className="relative pt-28 pb-24 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_0%,rgba(99,102,241,0.2),transparent)] pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-10 text-center relative">
 
-        <div className={`${INNER} relative`}>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/25 bg-indigo-500/[0.1] text-indigo-300 text-[11px] font-black uppercase tracking-[0.22em] mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             Built for prop firm traders
           </div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-[4.5rem] font-black tracking-tight leading-[0.88] mb-7">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[0.88] mb-7 text-center">
             Stop guessing.<br />
             <span className="bg-gradient-to-r from-indigo-400 via-violet-300 to-cyan-400 bg-clip-text text-transparent">
               Start passing.
             </span>
           </h1>
 
-          <p className="text-slate-400 text-xl leading-relaxed mb-10">
-            TraderDash shows you exactly where you stand on every prop firm rule — consistency, drawdown, qualifying days — the moment you import your trades.
+          <p className="text-slate-400 text-xl leading-relaxed mb-10 text-center">
+            Import your Tradovate trades and instantly see every metric your prop firm is watching — consistency, drawdown, qualifying days, and your account health score.
           </p>
 
           <div className="flex flex-col items-center gap-3 mb-16">
             <Cta onClick={onGetStarted} size="lg" />
-            <p className="text-slate-600 text-sm">Sign in with Google · No credit card required</p>
+            <p className="text-slate-600 text-sm text-center">Sign in with Google · No credit card required</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-x-10 gap-y-3">
             {[
-              { val: '< 1 min', label: 'to your first dashboard' },
-              { val: '100%',    label: 'private data' },
-              { val: '10+',     label: 'prop firm rule sets' },
+              { val: '< 1 min', rest: 'to your first dashboard' },
+              { val: '100%',    rest: 'private — your data only' },
+              { val: '10+',     rest: 'prop firm rule sets' },
             ].map(t => (
-              <div key={t.label} className="flex items-center gap-2 text-slate-500 text-sm">
-                <span className="font-black text-slate-200">{t.val}</span> {t.label}
+              <div key={t.val} className="flex items-center gap-2 text-slate-500 text-sm">
+                <span className="font-black text-slate-200">{t.val}</span> {t.rest}
               </div>
             ))}
           </div>
@@ -63,82 +56,86 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* ── Dashboard Mockup ─────────────────────────── */}
-      <section className={`${SEC} pb-24 md:pb-32`}>
-        <div className={FRAME}>
+      <section className="pb-28">
+        <div className="max-w-4xl mx-auto px-10">
           <BrowserFrame><DashboardMockup /></BrowserFrame>
         </div>
       </section>
 
       {/* ── Stats strip ──────────────────────────────── */}
-      <section className={`${SEC} py-14 border-y border-white/[0.05] bg-white/[0.015]`}>
-        <div className={`${FRAME} grid grid-cols-2 md:grid-cols-4 gap-8 text-center`}>
+      <section className="py-14 border-y border-white/[0.05] bg-white/[0.015]">
+        <div className="max-w-4xl mx-auto px-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
-            { label: 'Account Health Score', sub: 'One number, total clarity',   color: 'text-emerald-400' },
-            { label: 'Consistency Rule',      sub: 'Know your daily ceiling',     color: 'text-indigo-400' },
-            { label: 'Qualifying Days',        sub: 'Track days that count',      color: 'text-cyan-400'   },
-            { label: 'True Expectancy',        sub: 'See your statistical edge',  color: 'text-violet-400' },
+            { label: 'Account Health Score', sub: 'One number, total clarity',  color: 'text-emerald-400' },
+            { label: 'Consistency Rule',      sub: 'Know your daily ceiling',    color: 'text-indigo-400' },
+            { label: 'Qualifying Days',        sub: 'Track days that count',     color: 'text-cyan-400'   },
+            { label: 'True Expectancy',        sub: 'See your statistical edge', color: 'text-violet-400' },
           ].map(s => (
             <div key={s.label}>
-              <div className={`text-base font-black mb-1 ${s.color}`}>{s.label}</div>
-              <div className="text-slate-500 text-sm">{s.sub}</div>
+              <div className={`text-base font-black mb-1 text-center ${s.color}`}>{s.label}</div>
+              <div className="text-slate-500 text-sm text-center">{s.sub}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── Features ─────────────────────────────────── */}
-      <section className={`${SEC} py-28 md:py-36 text-center`}>
-        <div className={INNER}>
-          <p className="text-indigo-400 text-[11px] font-black uppercase tracking-[0.3em] mb-4">What's inside</p>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-5">
-            Every metric your eval requires.
-          </h2>
-          <p className="text-slate-400 text-lg leading-relaxed mb-16">
-            Import your CSV. One dashboard. Know exactly where you stand.
-          </p>
-        </div>
+      <section className="py-28 md:py-36">
+        <div className="max-w-4xl mx-auto px-10">
+          <div className="text-center mb-16">
+            <p className="text-indigo-400 text-[11px] font-black uppercase tracking-[0.3em] mb-4 text-center">What's inside</p>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-5 text-center">
+              Every metric your eval requires.
+            </h2>
+            <p className="text-slate-400 text-lg leading-relaxed text-center">
+              Import your CSV. One dashboard. Know exactly where you stand.
+            </p>
+          </div>
 
-        <div className={`${FRAME} grid grid-cols-1 sm:grid-cols-2 gap-5`}>
-          {[
-            { icon: TrendingUp, accent: 'emerald', title: 'Account Health Score',
-              desc: 'A single 0–100 score combining consistency, win rate, qualifying days, profit progress, and statistical edge. Know at a glance if you\'re on track to pass.' },
-            { icon: Target,     accent: 'indigo',  title: 'Consistency Rule Tracker',
-              desc: "See exactly how much P&L you can add today before hitting your firm's best-day rule. Never accidentally violate consistency again." },
-            { icon: Shield,     accent: 'cyan',    title: 'Risk Rule Compliance',
-              desc: 'Daily loss limit, max trailing drawdown, minimum trading days — every prop firm rule tracked live against your actual account data.' },
-            { icon: BarChart3,  accent: 'violet',  title: 'Statistical Expectancy',
-              desc: 'Your average edge per trade, calculated from real closed data. Positive expectancy proves your strategy works over time.' },
-          ].map(f => {
-            const palette: Record<string, { icon: string; border: string; bg: string }> = {
-              emerald: { icon: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/[0.07]' },
-              indigo:  { icon: 'text-indigo-400',  border: 'border-indigo-500/20',  bg: 'bg-indigo-500/[0.07]'  },
-              cyan:    { icon: 'text-cyan-400',    border: 'border-cyan-500/20',    bg: 'bg-cyan-500/[0.07]'    },
-              violet:  { icon: 'text-violet-400',  border: 'border-violet-500/20',  bg: 'bg-violet-500/[0.07]'  },
-            };
-            const s = palette[f.accent] ?? palette['indigo'];
-            return (
-              <div key={f.title} className={`rounded-2xl border ${s.border} ${s.bg} p-7 text-left hover:brightness-110 transition-all`}>
-                <div className={`w-11 h-11 rounded-xl border ${s.border} bg-black/20 flex items-center justify-center mb-5`}>
-                  <f.icon className={`w-5 h-5 ${s.icon}`} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {[
+              { icon: TrendingUp, accent: 'emerald', title: 'Account Health Score',
+                desc: 'A single 0–100 score combining consistency, win rate, qualifying days, profit progress, and edge. Know at a glance if you\'re on track to pass.' },
+              { icon: Target,     accent: 'indigo',  title: 'Consistency Rule Tracker',
+                desc: "Know exactly how much P&L you can make today before hitting your firm's best-day rule. Never accidentally violate consistency again." },
+              { icon: Shield,     accent: 'cyan',    title: 'Risk Rule Compliance',
+                desc: 'Daily loss limit, max trailing drawdown, minimum trading days — every prop firm rule tracked live against your actual account data.' },
+              { icon: BarChart3,  accent: 'violet',  title: 'Statistical Expectancy',
+                desc: 'Your real average edge per trade, from actual closed data. Positive expectancy proves your strategy has a mathematical advantage.' },
+            ].map(f => {
+              const p: Record<string, { icon: string; border: string; bg: string }> = {
+                emerald: { icon: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/[0.07]' },
+                indigo:  { icon: 'text-indigo-400',  border: 'border-indigo-500/20',  bg: 'bg-indigo-500/[0.07]'  },
+                cyan:    { icon: 'text-cyan-400',    border: 'border-cyan-500/20',    bg: 'bg-cyan-500/[0.07]'    },
+                violet:  { icon: 'text-violet-400',  border: 'border-violet-500/20',  bg: 'bg-violet-500/[0.07]'  },
+              };
+              const s = p[f.accent];
+              return (
+                <div key={f.title} className={`rounded-2xl border ${s.border} ${s.bg} p-8 hover:brightness-110 transition-all`}>
+                  <div className={`w-11 h-11 rounded-xl border ${s.border} bg-black/20 flex items-center justify-center mb-5`}>
+                    <f.icon className={`w-5 h-5 ${s.icon}`} />
+                  </div>
+                  <h3 className="font-black text-white text-base mb-3">{f.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{f.desc}</p>
                 </div>
-                <h3 className="font-black text-white text-base mb-3">{f.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{f.desc}</p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* ── Calendar Section ─────────────────────────── */}
-      <section className={`${SEC} py-28 md:py-36 text-center bg-[#07090f] border-y border-white/[0.04]`}>
-        <div className={INNER}>
-          <p className="text-violet-400 text-[11px] font-black uppercase tracking-[0.3em] mb-4">Trade Calendar</p>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-5">
-            Your history, at a glance.
-          </h2>
-          <p className="text-slate-400 text-lg leading-relaxed mb-10">
-            A P&L heatmap across every trading day — spot your best weeks, worst streaks, and the patterns behind your edge.
-          </p>
+      <section className="py-28 md:py-36 bg-[#07090f] border-y border-white/[0.04]">
+        <div className="max-w-4xl mx-auto px-10">
+          <div className="text-center mb-12">
+            <p className="text-violet-400 text-[11px] font-black uppercase tracking-[0.3em] mb-4 text-center">Trade Calendar</p>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-5 text-center">
+              Your history, at a glance.
+            </h2>
+            <p className="text-slate-400 text-lg leading-relaxed text-center">
+              A P&L heatmap across every trading day — spot your best weeks, worst streaks, and the patterns behind your edge.
+            </p>
+          </div>
 
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-12">
             {[
@@ -153,38 +150,38 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               </div>
             ))}
           </div>
-        </div>
 
-        <div className={FRAME}>
           <BrowserFrame><CalendarMockup /></BrowserFrame>
         </div>
       </section>
 
       {/* ── Final CTA ────────────────────────────────── */}
-      <section className={`${SEC} py-32 md:py-40 text-center relative overflow-hidden`}>
+      <section className="py-32 md:py-40 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,rgba(99,102,241,0.14),transparent)] pointer-events-none" />
-        <div className={`${INNER} relative`}>
-          <p className="text-indigo-400 text-[11px] font-black uppercase tracking-[0.3em] mb-6">Ready to pass?</p>
-          <h2 className="text-5xl md:text-6xl font-black tracking-tight leading-[0.9] mb-6">
+        <div className="max-w-3xl mx-auto px-10 text-center relative">
+          <p className="text-indigo-400 text-[11px] font-black uppercase tracking-[0.3em] mb-6 text-center">Ready to pass?</p>
+          <h2 className="text-5xl md:text-6xl font-black tracking-tight leading-[0.9] mb-6 text-center">
             Your funded account<br />
             <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
               starts with clarity.
             </span>
           </h2>
-          <p className="text-slate-400 text-xl leading-relaxed mb-12">
+          <p className="text-slate-400 text-xl leading-relaxed mb-12 text-center">
             Stop flying blind. Know exactly where you stand in under a minute.
           </p>
           <div className="flex flex-col items-center gap-3">
             <Cta onClick={onGetStarted} size="xl" />
-            <p className="text-slate-600 text-sm">No credit card required</p>
+            <p className="text-slate-600 text-sm text-center">No credit card required</p>
           </div>
         </div>
       </section>
 
       {/* ── Footer ───────────────────────────────────── */}
-      <footer className={`${SEC} border-t border-white/[0.05] py-8 flex flex-col sm:flex-row items-center justify-between gap-4`}>
-        <Logo />
-        <p className="text-slate-700 text-sm">© 2026 TraderDash · Built for prop traders.</p>
+      <footer className="border-t border-white/[0.05] py-8">
+        <div className="max-w-4xl mx-auto px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Logo />
+          <p className="text-slate-700 text-sm">© 2026 TraderDash · Built for prop traders.</p>
+        </div>
       </footer>
     </div>
   );
@@ -192,13 +189,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
 
 /* ── CTA Button ─────────────────────────────────────────────── */
 function Cta({ onClick, size = 'lg' }: { onClick: () => void; size?: 'lg' | 'xl' }) {
-  const sz = size === 'xl'
-    ? 'px-14 py-5 text-lg rounded-2xl gap-3'
-    : 'px-10 py-4 text-base rounded-2xl gap-2.5';
   return (
     <button
       onClick={onClick}
-      className={`inline-flex items-center ${sz} bg-indigo-600 hover:bg-indigo-500 text-white font-black transition-all duration-200 shadow-[0_0_0_1px_rgba(99,102,241,0.5),0_16px_64px_rgba(99,102,241,0.45)] hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgba(99,102,241,0.7),0_20px_80px_rgba(99,102,241,0.6)]`}
+      className={`inline-flex items-center gap-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all duration-200 shadow-[0_0_0_1px_rgba(99,102,241,0.5),0_16px_64px_rgba(99,102,241,0.45)] hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgba(99,102,241,0.7),0_20px_80px_rgba(99,102,241,0.6)] ${size === 'xl' ? 'px-14 py-5 text-lg' : 'px-10 py-4 text-base'}`}
     >
       <Rocket className={size === 'xl' ? 'w-5 h-5' : 'w-4 h-4'} />
       Get Started
