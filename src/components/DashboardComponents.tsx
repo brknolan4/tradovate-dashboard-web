@@ -412,6 +412,17 @@ export const MetricCard: React.FC<MetricCardProps> = ({
                                 className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all duration-1000 ease-out"
                                 style={{ width: `${progressPct}%` }}
                             />
+                            {progressBar.maxLossFloor !== undefined && (() => {
+                                const floorPct = Math.min(100, Math.max(0,
+                                    (progressBar.maxLossFloor! - progressStart) / progressSpan * 100
+                                ));
+                                return (
+                                    <div
+                                        className="absolute top-0 bottom-0 w-[2px] bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.9)]"
+                                        style={{ left: `${floorPct}%` }}
+                                    />
+                                );
+                            })()}
                         </div>
                         {progressBar.dailyLoss && (() => {
                             const dlPct = Math.min(100, (progressBar.dailyLoss!.used / progressBar.dailyLoss!.limit) * 100);
@@ -429,11 +440,24 @@ export const MetricCard: React.FC<MetricCardProps> = ({
                                 </div>
                             );
                         })()}
-                        <div className="grid grid-cols-2 gap-2 text-left">
+                        <div className={`grid ${progressBar.maxLossFloor !== undefined ? 'grid-cols-3' : 'grid-cols-2'} gap-2 text-left`}>
                             <div className="rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2">
                                 <div className="text-[9px] uppercase tracking-[0.22em] text-slate-500 font-black mb-1">Target</div>
                                 <div className="text-xs font-bold text-white">${progressBar.target.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
                             </div>
+                            {progressBar.maxLossFloor !== undefined && (() => {
+                                const cushion = progressBar.current - progressBar.maxLossFloor!;
+                                const cushionOk = cushion > 0;
+                                return (
+                                    <div className={`rounded-xl border px-3 py-2 ${cushionOk ? 'border-rose-500/25 bg-rose-500/8' : 'border-rose-500/50 bg-rose-500/20'}`}>
+                                        <div className="text-[9px] uppercase tracking-[0.22em] text-rose-400/70 font-black mb-1">DD Floor</div>
+                                        <div className="text-xs font-bold text-rose-400">${Math.round(progressBar.maxLossFloor!).toLocaleString()}</div>
+                                        <div className={`text-[9px] mt-0.5 font-bold ${cushionOk ? 'text-slate-500' : 'text-rose-300'}`}>
+                                            {cushionOk ? `$${Math.round(cushion).toLocaleString()} cushion` : 'BLOWN'}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
                             <div className="rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2">
                                 <div className="text-[9px] uppercase tracking-[0.22em] text-slate-500 font-black mb-1">To Goal</div>
                                 <div className="text-xs font-bold text-indigo-300">{remainingToTarget > 0 ? `$${remainingToTarget.toLocaleString(undefined, { maximumFractionDigits: 0 })}` : 'Ready'}</div>

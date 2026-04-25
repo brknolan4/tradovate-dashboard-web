@@ -488,6 +488,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onOpenSyncCenter }) => {
     const consistencyIsBinding = consistencyMin > profitTargetRaw && consistencyMin > 0;
     const profitTarget = startBal + effectiveTargetRaw;
 
+    // EOD trailing drawdown floor — peaks on highest end-of-day balance and never resets down.
+    // This is how most prop firms (Apex, Topstep, etc.) calculate the trailing drawdown threshold.
+    const maxDrawdownAmount = accountRules[selectedAccount]?.maxDrawdown || 0;
+    const drawdownFloor = (maxDrawdownAmount > 0 && metrics)
+        ? metrics.eodPeakBalance - maxDrawdownAmount
+        : undefined;
+
     const consistencyRuleScore = useMemo(() => {
         if (!metrics) return 0;
         const { bestDayPct, rulePercent } = metrics.consistencyRule;
@@ -642,6 +649,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onOpenSyncCenter }) => {
                                 target: profitTarget,
                                 start: startBal,
                                 label: '',
+                                maxLossFloor: drawdownFloor,
                                 dailyLoss: { used: metrics.intradayDrawdown, limit: metrics.dailyLossLimit }
                             }}
                         />
